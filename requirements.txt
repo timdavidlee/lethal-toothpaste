@@ -1,0 +1,11 @@
+pandas
+numpy
+humanfriendly
+loguru
+case-converter
+pyarrow
+
+# jupyter stuff
+jupyter
+jupyterlab
+ipywidgets
