@@ -50,7 +50,7 @@ def mt_generate_journeys(users, cat2item, item2item, item2viewprob, item2purchas
     quant_prob = (1 / quantities) ** 0.5
     quant_prob = quant_prob / quant_prob.sum()
 
-    qty = np.random.choice(quantities, p=quant_prob, size=n_users)
+    qty = np.random.choice(quantities, p=quant_prob, size=len(users))
     tups = list(zip(users, qty))
     n_count = len(tups)
 
@@ -77,7 +77,6 @@ def trxn2shipping_df(trxn_df, countries, country_probs):
 
 
 def generate_upload_files(n_users: int = 1000):
-
     sample_dir = Path("./sample_files/")
 
     usernames = generate_names(n_users)
@@ -107,11 +106,12 @@ def generate_upload_files(n_users: int = 1000):
     logger.info(f"{len(users):,}: {userfile}")
 
     items_df = generate_items_df(SELECT_CATS, force=False)
+    items_df["item_price"] = items_df["item_price"].map(lambda x: float(x.replace(",", "")))
     itemsfile = sample_dir / "items.tsv"
     items_df[["item_id", "item_price", "item_currency", "item_brand_name", "item_title"]].to_csv(itemsfile, index=False, sep="\t")
     logger.info(f"{items_df.shape[0]:,}: {itemsfile}")
 
-    item2categoryfile = sample_dir / "item_category"
+    item2categoryfile = sample_dir / "item_category.tsv"
     items_df[["item_id", "item_category_name"]].to_csv(item2categoryfile, index=False, sep="\t")
     logger.info(f"{items_df.shape[0]:,}: {item2categoryfile}")
 
@@ -131,3 +131,6 @@ def generate_upload_files(n_users: int = 1000):
     shipping_file = sample_dir / "shipping.tsv"
     shipping_df.rename(columns={"week_datetime": "ship_date"}).to_csv(shipping_file, index=False, sep="\t")
     logger.info(f"{shipping_df.shape[0]:,}: {shipping_file}")
+
+
+generate_upload_files()
