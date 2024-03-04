@@ -9,3 +9,6 @@ pyarrow
 jupyter
 jupyterlab
 ipywidgets
+
+# for linting
+ruff

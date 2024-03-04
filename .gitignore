@@ -9,6 +9,9 @@ __pycache__/
 # local csvs
 ./sample_files/*
 
+# macos
+.DS_Store
+
 # Distribution / packaging
 .Python
 build/
